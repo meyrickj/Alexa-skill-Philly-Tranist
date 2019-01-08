@@ -76,8 +76,7 @@ def get_status(intent):
         route_code = get_route_code(route_name.lower())
 
         if (route_code != "unkn"):
-            #card_title = "BART Departures from " + station_name.title()
-
+            
             response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + "route_code")
             route_status = json.load(response)  
 
