@@ -66,7 +66,7 @@ def get_status(intent):
     session_attributes = {}
     card_title = "Septa Status"
     speech_output = "I'm not sure which route you wanted the status for. " \
-                    "Please try again."
+                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
     reprompt_text = "I'm not sure which route you wanted the status for. " \
                     "Try asking about the Market Frankford line or a bus route, such as Route 66."
     should_end_session = False
@@ -77,7 +77,7 @@ def get_status(intent):
 
         if (route_code != "unkn"):
             
-            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + "route_code")
+            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
             route_status = json.load(response)  
 
             if len(route_status[0]["current_message"]) > 0:
@@ -86,6 +86,9 @@ def get_status(intent):
                 speech_output += "The " + route_status[0]["route_name"] + " is running normally."   
             
             reprompt_text = ""
+            
+    return build_response(session_attributes, build_speechlet_response(
+       card_title, speech_output, reprompt_text, should_end_session))
             
             
             
