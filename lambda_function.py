@@ -3,6 +3,41 @@ import json
 
 API_BASE_URL="https://www3.septa.org/hackathon"
 
+from __future__ import print_function
+
+
+# --------------- Helpers that build all of the responses ----------------------
+
+def build_speechlet_response(title, output, reprompt_text, should_end_session):
+    return {
+        "outputSpeech": {
+            'type': 'PlainText',
+            'text': output 
+        },
+        "card": {
+            "type": "Simple",
+            "title": title,
+            "content": output
+        },
+        "reprompt": {
+            "outputSpeech": {
+                'type': "PlainText",
+                'text': reprompt_text 
+            }
+        },
+        "shouldEndSession": should_end_session
+    }
+
+def build_response(session_attributes, speechlet_response):
+    return {
+        "version": "1.0",
+        "sessionAttributes": session_attributes,
+        "response": speechlet_response
+    }
+
+# --------------- Functions for the Alexa skill ----------------------
+
+
 def lambda_handler(event, context):
     if (event["session"]["application"]["applicationId"] !=
             "amzn1.ask.skill.xxx-xxxx-xxxx-xxxx-xxxxx-xxxx"):
@@ -270,29 +305,3 @@ def get_route_code(route_name):
         "Route 102": "trolley_route_102"
     }.get(route_name, "unkn")               
 
-def build_speechlet_response(title, output, reprompt_text, should_end_session):
-    return {
-        "outputSpeech": {
-            'type': 'PlainText',
-            'text': output 
-        },
-        "card": {
-            "type": "Simple",
-            "title": title,
-            "content": output
-        },
-        "reprompt": {
-            "outputSpeech": {
-                'type': "PlainText",
-                'text': reprompt_text 
-            }
-        },
-        "shouldEndSession": should_end_session
-    }
-
-def build_response(session_attributes, speechlet_response):
-    return {
-        "version": "1.0",
-        "sessionAttributes": session_attributes,
-        "response": speechlet_response
-    }
