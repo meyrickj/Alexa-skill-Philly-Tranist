@@ -1,0 +1,834 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "philly transit",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GetStatus",
+                    "slots": [
+                        {
+                            "name": "route",
+                            "type": "list_of_routes"
+                        }
+                    ],
+                    "samples": [
+                        "are there problems on the {route} line",
+                        "is the {route} line running normally",
+                        "what's the current status of the {route} line",
+                        "what's up with the {route} line",
+                        "status of the {route} line",
+                        "what's the stats of the {route} line",
+                        "what's the status of the {route}",
+                        "what's the status of {route}",
+                        "is {route} running normally",
+                        "is the {route} running normally",
+                        "status of the {route}",
+                        "are there issues with the {route}",
+                        "system status of {route}",
+                        "status of {route}",
+                        "are there issues with {route}",
+                        "what is the system status of {route}",
+                        "what is the current status of the {route} line",
+                        "what is the current status of {route}",
+                        "are there any problems on {route}",
+                        "how does {route} look",
+                        "what's up with the {route}",
+                        "what's up with {route}"
+                    ]
+                },
+                {
+                    "name": "GetElevators",
+                    "slots": [],
+                    "samples": [
+                        "elevator status",
+                        "are there elevator issues right now",
+                        "whats up with the elevators",
+                        "are there any elevators out of order right now",
+                        "which elevators are out of order",
+                        "what are the elevators out right now",
+                        "how are the elevators looking",
+                        "is there problems with the elevators",
+                        "are there elevator outages"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "list_of_routes",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "route 1"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 2"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 3"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 4"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 5"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 6"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 7"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 8"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 9"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 12"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 14"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 16"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 17"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 18"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 19"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 20"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 21"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 22"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 23"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 24"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 25"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 26"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 27"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 28"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 29"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 30"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 31"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 32"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 33"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 35"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 37"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 38"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 39"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 40"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 42"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 43"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 44"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 45"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 46"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 47"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 47m"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 48"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 50"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 52"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 53"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 54"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 55"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 56"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 57"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 58"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 59"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 60"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 61"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 62"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 64"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 65"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 66"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 67"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 68"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 70"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 73"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 75"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 77"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 78"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 79"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 80"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 84"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 88"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 89"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 90"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 91"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 92"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 93"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 94"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 95"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 96"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 97"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 98"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 99"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 103"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 104"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 105"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 106"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 107"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 108"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 109"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 110"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 111"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 112"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 113"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 114"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 115"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 117"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 118"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 119"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 120"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 123"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 124"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 125"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 126"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 127"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 128"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 129"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 130"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 131"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 132"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 133"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 139"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 150"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 201"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 204"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 205"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 206"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route 310"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route broad street owl"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route market frankford owl"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route g"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route h"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route xh"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route j"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route k"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route l"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route r"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "route lucy"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lucy"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "broad street owl"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "market frankford owl"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "broad street line"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "market frankford line"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "norristown high speed line"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "airport"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "chestnut hill east"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "chestnut hill west"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cynwyd"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "fox chase"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lansdale/doylestown"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lansdale doylestown"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "manayunk/norristown"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "manayunk norristown"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "media/elwyn"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "media/elwyn"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "paoli/thorndale"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "paoli thorndale"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "trenton"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "warminster"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "wilmington/newark"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "wilmington newark"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "west trenton"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "glenside combined"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "glenside"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
