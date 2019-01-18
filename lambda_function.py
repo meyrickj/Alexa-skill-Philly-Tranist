@@ -116,9 +116,9 @@ def get_status(intent):
             route_status = json.load(response)  
 
             if len(route_status[0]["current_message"]) > 0:
-                speech_output += "The current status of" + route_status[0]["route_name"] + route_status[0]["current_message"] 
+                speech_output = "The current status of" + route_status[0]["route_name"] + route_status[0]["current_message"] 
             else:
-                speech_output += "The " + route_status[0]["route_name"] + " is running normally."   
+                speech_output = "The " + route_status[0]["route_name"] + " is running normally."   
             
             reprompt_text = ""
             
