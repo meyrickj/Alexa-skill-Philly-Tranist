@@ -94,54 +94,7 @@ def get_welcome_response():
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
-        
-def get_status(intent):
-    session_attributes = {}
-    card_title = "Septa Status"
-    speech_output = "I'm not sure which route you wanted the status for. " \
-                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
-    reprompt_text = "I'm not sure which route you wanted the status for. " \
-                    "Try asking about the Market Frankford line or a bus route, such as Route 66."
-    should_end_session = False
-
-    if "route" in intent["slots"]:
-        route_name = intent["slots"]["route"]["value"]
-        route_code = get_route_code(route_name.lower())
-
-        if (route_code != "unkn"):
-            
-            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
-            route_status = json.load(response) 
-            
-            bus_route = "bus_route"
-            regional_rail = "rr_route"
-            trolley_route = "trolley_route"
-            
-            if bus_route in route_code:
-                if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of route " + route_status[0]["route_name"] + ". " + route_status[0]["current_message"] 
-                else:
-                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
-            elif regional_rail in route_code:
-                if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of the " + route_status[0]["route_name"] + "line. " + route_status[0]["current_message"] 
-                else:
-                    speech_output = "There are currently no alerts for the " + route_status[0]["route_name"] + "line. " + " This line is running normally."
-            elif trolley_route in route_code:
-                if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of route " + route_status[0]["route_name"] + ". " + route_status[0]["current_message"] 
-                else:
-                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
-              
-            
-            reprompt_text = ""
-            
-    return build_response(session_attributes, build_speechlet_response(
-       card_title, speech_output, reprompt_text, should_end_session))
-            
-            
-            
-            
+     
 
 def get_elevator_status():
     session_attributes = {}
@@ -162,160 +115,218 @@ def get_elevator_status():
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
         
+def get_status(intent):
+    session_attributes = {}
+    card_title = "Septa Status"
+    speech_output = "I'm not sure which route you wanted the status for. " \
+                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
+    reprompt_text = "I'm not sure which route you wanted the status for. " \
+                    "Try asking about the Market Frankford line or a bus route, such as Route 66."
+    should_end_session = False
+    
+    if "route" in intent["slots"]:
+        route_name = intent["slots"]["route"]["value"]
+        route_code = get_route_code(route_name.lower())
 
-def get_route_code(route_name):
+        if (route_code != "unkn"):
+            
+            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
+            route_status = json.load(response)  
+            
+            bus_route = "bus_route"
+            regional_rail = "rr_route"
+            trolley_route = "trolley_route"
+            
+            if bus_route in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of route " + route_status[0]["route_name"] + "." + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."   
+                    
+            elif regional_rail in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of the " + route_status[0]["route_name"] + "line. " + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for the " + route_status[0]["route_name"] + " line. " + " This line is running normally." 
+                    
+            elif trolley_route in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of route " + route_status[0]["route_name"] + "." + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
+                
+                
+            
+            reprompt_text = ""
+
+    
+    return build_response(session_attributes, build_speechlet_response(
+       card_title, speech_output, reprompt_text, should_end_session))
+            
+
+
+            
+            
+
+def get_route_code(septa_route_name):
     return {
-        "Route 1":	"bus_route_1",
-        "Route 2":	"bus_route_2",
-        "Route 3":	"bus_route_3",
-        "Route 4":	"bus_route_4",
-        "Route 5":	"bus_route_5",
-        "Route 6":	"bus_route_6",
-        "Route 7":	"bus_route_7",
-        "Route 8":	"bus_route_8",
-        "Route 9":	"bus_route_9",
-        "Route 12":	"bus_route_12",
-        "Route 14":	"bus_route_14",
-        "Route 16":	"bus_route_16",
-        "Route 17":	"bus_route_17",
-        "Route 18":	"bus_route_18",
-        "Route 19":	"bus_route_19",
-        "Route 20":	"bus_route_20",
-        "Route 21":	"bus_route_21",
-        "Route 22":	"bus_route_22",
-        "Route 23":	"bus_route_23",
-        "Route 24":	"bus_route_24",
-        "Route 25":	"bus_route_25",
-        "Route 26":	"bus_route_26",
-        "Route 27":	"bus_route_27",
-        "Route 28":	"bus_route_28",
-        "Route 29":	"bus_route_29",
-        "Route 30":	"bus_route_30",
-        "Route 31":	"bus_route_31",
-        "Route 32":	"bus_route_32",
-        "Route 33":	"bus_route_33",
-        "Route 35":	"bus_route_35",
-        "Route 37":	"bus_route_37",
-        "Route 38":	"bus_route_38",
-        "Route 39":	"bus_route_39",
-        "Route 40":	"bus_route_40",
-        "Route 42":	"bus_route_42",
-        "Route 43":	"bus_route_43",
-        "Route 44":	"bus_route_44",
-        "Route 45":	"bus_route_45",
-        "Route 46":	"bus_route_46",
-        "Route 47":	"bus_route_47",
-        "Route 47m": "bus_route_47m",
-        "Route 48":	"bus_route_48",
-        "Route 50":	"bus_route_50",
-        "Route 52":	"bus_route_52",
-        "Route 53":	"bus_route_53",
-        "Route 54":	"bus_route_54",
-        "Route 55":	"bus_route_55",
-        "Route 56":	"bus_route_56",
-        "Route 57":	"bus_route_57",
-        "Route 58":	"bus_route_58",
-        "Route 59":	"bus_route_59",
-        "Route 60":	"bus_route_60",
-        "Route 61":	"bus_route_61",
-        "Route 62":	"bus_route_62",
-        "Route 64":	"bus_route_64",
-        "Route 65":	"bus_route_65",
-        "Route 66":	"bus_route_66",
-        "Route 67":	"bus_route_67",
-        "Route 68":	"bus_route_68",
-        "Route 70":	"bus_route_70",
-        "Route 73":	"bus_route_73",
-        "Route 75":	"bus_route_75",
-        "Route 77":	"bus_route_77",
-        "Route 78":	"bus_route_78",
-        "Route 79":	"bus_route_79",
-        "Route 80":	"bus_route_80",
-        "Route 84":	"bus_route_84",
-        "Route 88":	"bus_route_88",
-        "Route 89":	"bus_route_89",
-        "Route 90":	"bus_route_90",
-        "Route 91":	"bus_route_91",
-        "Route 92":	"bus_route_92",
-        "Route 93":	"bus_route_93",
-        "Route 94":	"bus_route_94",
-        "Route 95":	"bus_route_95",
-        "Route 96":	"bus_route_96",
-        "Route 97":	"bus_route_97",
-        "Route 98":	"bus_route_98",
-        "Route 99":	"bus_route_99",
-        "Route 103": "bus_route_103",
-        "Route 104": "bus_route_104",
-        "Route 105": "bus_route_105",
-        "Route 106": "bus_route_106",
-        "Route 107": "bus_route_107",
-        "Route 108": "bus_route_108",
-        "Route 109": "bus_route_109",
-        "Route 110": "bus_route_110",
-        "Route 111": "bus_route_111",
-        "Route 112": "bus_route_112",
-        "Route 113": "bus_route_113",
-        "Route 114": "bus_route_114",
-        "Route 115": "bus_route_115",
-        "Route 117": "bus_route_117",
-        "Route 118": "bus_route_118",
-        "Route 119": "bus_route_119",
-        "Route 120": "bus_route_120",
-        "Route 123": "bus_route_123",
-        "Route 124": "bus_route_124",
-        "Route 125": "bus_route_125",
-        "Route 126": "bus_route_126",
-        "Route 127": "bus_route_127",
-        "Route 128": "bus_route_128",
-        "Route 129": "bus_route_129",
-        "Route 130": "bus_route_130",
-        "Route 131": "bus_route_131",
-        "Route 132": "bus_route_132",
-        "Route 133": "bus_route_133",
-        "Route 139": "bus_route_139",
-        "Route 150": "bus_route_150",
-        "Route 201": "bus_route_201",
-        "Route 204": "bus_route_204",
-        "Route 205": "bus_route_205",
-        "Route 206": "bus_route_206",
-        "Route 310": "bus_route_310",
-        "Route BSO": "bus_route_BSO",
-        "Route MFO": "bus_route_MFO",
-        "Route G": "bus_route_G",
-        "Route H": "bus_route_H",
-        "Route XH": "bus_route_XH",
-        "Route J": "bus_route_J",
-        "Route K": "bus_route_K",
-        "Route L": "bus_route_L",
-        "Route R": "bus_route_R",
-        "Route LUCY": "bus_route_LUCY",
-        "LUCY": "bus_route_LUCY",
-        "Broad Street Owl": "rr_route_bso",
-        "Market Frankford Owl": "rr_route_mfo",
-        "Broad Street Line": "rr_route_bsl",
-        "Market Frankford Line": "rr_route_mfl",
-        "Norristown High Speed Line": "rr_route_nhsl",
-        "Airport": "rr_route_apt",
-        "Chestnut Hill East": "rr_route_chw",
-        "Chestnut Hill West": "rr_route_che",
-        "Cynwyd": "rr_route_cyn",
-        "Fox Chase": "rr_route_fxc",
-        "Lansdale/Doylestown": "rr_route_landdoy",
-        "Manayunk/Norristown": "rr_route_nor",
-        "Media/Elwyn": "rr_route_med",
-        "Paoli/Thorndale": "rr_route_pao",
-        "Trenton": "rr_route_trent",
-        "Warminster": "rr_route_warm",
-        "Wilmington/Newark": "rr_route_wilm",
-        "West Trenton": "rr_route_wtren",
-        "Glenside Combined": "rr_route_gc",
-        "Route 10": "trolley_route_10",
-        "Route 11": "trolley_route_11",
-        "Route 13": "trolley_route_13",
-        "Route 15": "trolley_route_15",
-        "Route 34": "trolley_route_34",
-        "Route 36": "trolley_route_36",
-        "Route 101": "trolley_route_101",
-        "Route 102": "trolley_route_102"
-    }.get(route_name, "unkn")               
-
+        "route 1":	"bus_route_1",
+        "route 2":	"bus_route_2",
+        "route 3":	"bus_route_3",
+        "route 4":	"bus_route_4",
+        "route 5":	"bus_route_5",
+        "route 6":	"bus_route_6",
+        "route 7":	"bus_route_7",
+        "route 8":	"bus_route_8",
+        "route 9":	"bus_route_9",
+        "route 12":	"bus_route_12",
+        "route 14":	"bus_route_14",
+        "route 16":	"bus_route_16",
+        "route 17":	"bus_route_17",
+        "route 18":	"bus_route_18",
+        "route 19":	"bus_route_19",
+        "route 20":	"bus_route_20",
+        "route 21":	"bus_route_21",
+        "route 22":	"bus_route_22",
+        "route 23":	"bus_route_23",
+        "route 24":	"bus_route_24",
+        "route 25":	"bus_route_25",
+        "route 26":	"bus_route_26",
+        "route 27":	"bus_route_27",
+        "route 28":	"bus_route_28",
+        "route 29":	"bus_route_29",
+        "route 30":	"bus_route_30",
+        "route 31":	"bus_route_31",
+        "route 32":	"bus_route_32",
+        "route 33":	"bus_route_33",
+        "route 35":	"bus_route_35",
+        "route 37":	"bus_route_37",
+        "route 38":	"bus_route_38",
+        "route 39":	"bus_route_39",
+        "route 40":	"bus_route_40",
+        "route 42":	"bus_route_42",
+        "route 43":	"bus_route_43",
+        "route 44":	"bus_route_44",
+        "route 45":	"bus_route_45",
+        "route 46":	"bus_route_46",
+        "route 47":	"bus_route_47",
+        "route 47m": "bus_route_47m",
+        "route 48":	"bus_route_48",
+        "route 50":	"bus_route_50",
+        "route 52":	"bus_route_52",
+        "route 53":	"bus_route_53",
+        "route 54":	"bus_route_54",
+        "route 55":	"bus_route_55",
+        "route 56":	"bus_route_56",
+        "route 57":	"bus_route_57",
+        "route 58":	"bus_route_58",
+        "route 59":	"bus_route_59",
+        "route 60":	"bus_route_60",
+        "route 61":	"bus_route_61",
+        "route 62":	"bus_route_62",
+        "route 64":	"bus_route_64",
+        "route 65":	"bus_route_65",
+        "route 66":	"bus_route_66",
+        "route 67":	"bus_route_67",
+        "route 68":	"bus_route_68",
+        "route 70":	"bus_route_70",
+        "route 73":	"bus_route_73",
+        "route 75":	"bus_route_75",
+        "route 77":	"bus_route_77",
+        "route 78":	"bus_route_78",
+        "route 79":	"bus_route_79",
+        "route 80":	"bus_route_80",
+        "route 84":	"bus_route_84",
+        "route 88":	"bus_route_88",
+        "route 89":	"bus_route_89",
+        "route 90":	"bus_route_90",
+        "route 91":	"bus_route_91",
+        "route 92":	"bus_route_92",
+        "route 93":	"bus_route_93",
+        "route 94":	"bus_route_94",
+        "route 95":	"bus_route_95",
+        "route 96":	"bus_route_96",
+        "route 97":	"bus_route_97",
+        "route 98":	"bus_route_98",
+        "route 99":	"bus_route_99",
+        "route 103": "bus_route_103",
+        "route 104": "bus_route_104",
+        "route 105": "bus_route_105",
+        "route 106": "bus_route_106",
+        "route 107": "bus_route_107",
+        "route 108": "bus_route_108",
+        "route 109": "bus_route_109",
+        "route 110": "bus_route_110",
+        "route 111": "bus_route_111",
+        "route 112": "bus_route_112",
+        "route 113": "bus_route_113",
+        "route 114": "bus_route_114",
+        "route 115": "bus_route_115",
+        "route 117": "bus_route_117",
+        "route 118": "bus_route_118",
+        "route 119": "bus_route_119",
+        "route 120": "bus_route_120",
+        "route 123": "bus_route_123",
+        "route 124": "bus_route_124",
+        "route 125": "bus_route_125",
+        "route 126": "bus_route_126",
+        "route 127": "bus_route_127",
+        "route 128": "bus_route_128",
+        "route 129": "bus_route_129",
+        "route 130": "bus_route_130",
+        "route 131": "bus_route_131",
+        "route 132": "bus_route_132",
+        "route 133": "bus_route_133",
+        "route 139": "bus_route_139",
+        "route 150": "bus_route_150",
+        "route 201": "bus_route_201",
+        "route 204": "bus_route_204",
+        "route 205": "bus_route_205",
+        "route 206": "bus_route_206",
+        "route 310": "bus_route_310",
+        "route BSO": "bus_route_BSO",
+        "route MFO": "bus_route_MFO",
+        "route G": "bus_route_G",
+        "route H": "bus_route_H",
+        "route XH": "bus_route_XH",
+        "route J": "bus_route_J",
+        "route K": "bus_route_K",
+        "route L": "bus_route_L",
+        "route r": "bus_route_r",
+        "route lucy": "bus_route_lucy",
+        "lucy": "bus_route_lucy",
+        "broad street owl": "rr_route_bso",
+        "market frankford owl": "rr_route_mfo",
+        "broad street line": "rr_route_bsl",
+        "market frankford line": "rr_route_mfl",
+        "norristown high speed line": "rr_route_nhsl",
+        "airport": "rr_route_apt",
+        "chestnut hill east": "rr_route_chw",
+        "chestnut hill west": "rr_route_che",
+        "cynwyd": "rr_route_cyn",
+        "fox chase": "rr_route_fxc",
+        "lansdale/doylestown": "rr_route_landdoy",
+        "lansdale doylestown": "rr_route_landdoy",
+        "manayunk/norristown": "rr_route_nor",
+        "manayunk norristown": "rr_route_nor",
+        "media/elwyn": "rr_route_med",
+        "media elwyn": "rr_route_med",
+        "paoli/thorndale": "rr_route_pao",
+        "paoli thorndale": "rr_route_pao",
+        "trenton": "rr_route_trent",
+        "warminster": "rr_route_warm",
+        "wilmington/newark": "rr_route_wilm",
+        "wilmington newark": "rr_route_wilm",
+        "west trenton": "rr_route_wtren",
+        "glenside combined": "rr_route_gc",
+        "glenside": "rr_route_gc",
+        "route 10": "trolley_route_10",
+        "route 11": "trolley_route_11",
+        "route 13": "trolley_route_13",
+        "route 15": "trolley_route_15",
+        "route 34": "trolley_route_34",
+        "route 36": "trolley_route_36",
+        "route 101": "trolley_route_101",
+        "route 102": "trolley_route_102"
+    }.get(septa_route_name, "unkn")               
+                 
