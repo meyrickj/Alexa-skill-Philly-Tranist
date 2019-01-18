@@ -1,0 +1,35 @@
+GetStatus
+are there problems on the {route} line
+is the {route} line running normally
+what's the current status of the {route} line
+what's up with the {route} line
+status of the {route} line
+what's the stats of the {route} line
+what's the status of the {route}
+what's the status of {route}
+is {route} running normally
+is the {route} running normally
+status of the {route}
+are there issues with the {route}
+system status of {route}
+status of {route}
+are there issues with {route}
+what is the system status of {route}
+what is the current status of the {route} line
+what is the current status of {route}
+are there any problems on {route}
+how does {route} look
+what's up with the {route}
+what's up with {route}
+
+GetElevators
+
+elevator status
+are there elevator issues right now
+whats up with the elevators
+are there any elevators out of order right now
+which elevators are out of order
+what are the elevators out right now
+how are the elevators looking
+is there problems with the elevators
+are there elevator outages
