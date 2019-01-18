@@ -106,7 +106,6 @@ def get_status(intent):
 
     if "route" in intent["slots"]:
         route_name = intent["slots"]["route"]["value"]
-        print(route_name)
         route_code = get_route_code(route_name.lower())
 
         if (route_code != "unkn"):
