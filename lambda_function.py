@@ -104,19 +104,36 @@ def get_status(intent):
                     "Try asking about the Market Frankford line or a bus route, such as Route 66."
     should_end_session = False
 
-    if "Route" in intent["slots"]:
-        route_name = intent["slots"]["Route"]["value"]
+    if "route" in intent["slots"]:
+        route_name = intent["slots"]["route"]["value"]
+        print(route_name)
         route_code = get_route_code(route_name.lower())
 
         if (route_code != "unkn"):
             
             response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
-            route_status = json.load(response)  
-
-            if len(route_status[0]["current_message"]) > 0:
-                speech_output = "The current status of" + route_status[0]["route_name"] + route_status[0]["current_message"] 
-            else:
-                speech_output = "The " + route_status[0]["route_name"] + " is running normally."   
+            route_status = json.load(response) 
+            
+            bus_route = "bus_route"
+            regional_rail = "rr_route"
+            trolley_route = "trolley_route"
+            
+            if bus_route in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of route " + route_status[0]["route_name"] + ". " + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
+            elif regional_rail in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of the " + route_status[0]["route_name"] + "line. " + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for the " + route_status[0]["route_name"] + "line. " + " This line is running normally."
+            elif trolley_route in route_code:
+                if len(route_status[0]["current_message"]) > 0:
+                    speech_output = "The current status of route " + route_status[0]["route_name"] + ". " + route_status[0]["current_message"] 
+                else:
+                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
+              
             
             reprompt_text = ""
             
