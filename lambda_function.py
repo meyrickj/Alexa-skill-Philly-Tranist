@@ -1,7 +1,7 @@
 import urllib2
 import json
 
-API_BASE_URL="https://www3.septa.org/hackathon"
+API_BASE_URL = "https://www3.septa.org/hackathon"
 
 
 # --------------- Helpers that build all of the responses ----------------------
@@ -10,7 +10,7 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
     return {
         "outputSpeech": {
             'type': 'PlainText',
-            'text': output 
+            'text': output
         },
         "card": {
             "type": "Simple",
@@ -20,11 +20,12 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
         "reprompt": {
             "outputSpeech": {
                 'type': "PlainText",
-                'text': reprompt_text 
+                'text': reprompt_text
             }
         },
         "shouldEndSession": should_end_session
     }
+
 
 def build_response(session_attributes, speechlet_response):
     return {
@@ -40,9 +41,10 @@ def lambda_handler(event, context):
     if (event["session"]["application"]["applicationId"] !=
             "amzn1.ask.skill.xxx-xxxx-xxxx-xxxx-xxxxx-xxxx"):
         raise ValueError("Invalid Application ID")
-    
+
     if event["session"]["new"]:
-        on_session_started({"requestId": event["request"]["requestId"]}, event["session"])
+        on_session_started(
+            {"requestId": event["request"]["requestId"]}, event["session"])
 
     if event["request"]["type"] == "LaunchRequest":
         return on_launch(event["request"], event["session"])
@@ -51,17 +53,19 @@ def lambda_handler(event, context):
     elif event["request"]["type"] == "SessionEndedRequest":
         return on_session_ended(event["request"], event["session"])
 
+
 def on_session_started(session_started_request, session):
     print "Starting new session."
 
+
 def on_launch(launch_request, session):
     return get_welcome_response()
+
 
 def on_intent(intent_request, session):
     intent = intent_request["intent"]
     intent_name = intent_request["intent"]["name"]
 
-  
     if intent_name == "GetElevators":
         return get_elevator_status()
     elif intent_name == "GetStatus":
@@ -73,9 +77,11 @@ def on_intent(intent_request, session):
     else:
         raise ValueError("Invalid intent")
 
+
 def on_session_ended(session_ended_request, session):
     print "Ending session."
     # Cleanup goes here...
+
 
 def handle_session_end_request():
     card_title = "Philly Transit - Thank You"
@@ -83,6 +89,7 @@ def handle_session_end_request():
     should_end_session = True
 
     return build_response({}, build_speechlet_response(card_title, speech_output, None, should_end_session))
+
 
 def get_welcome_response():
     session_attributes = {}
@@ -94,7 +101,7 @@ def get_welcome_response():
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
-     
+
 
 def get_elevator_status():
     session_attributes = {}
@@ -104,17 +111,19 @@ def get_elevator_status():
 
     response = urllib2.urlopen(API_BASE_URL + "/elevator")
     septa_elevator_status = json.load(response)
-    
-    if septa_elevator_status['meta']['elevators_out'] == 0: 
-        speech_output = 'All Elevators are currently operational' 
-    else: 
-        for elevators in septa_elevator_status['results']:
-            speech_output += 'On' + elevators['line'] + ' at station ' + elevators['station'] + ' the ' + elevators['elevator'] + ' elevator has ' + elevators['message'] + ' . ' 
 
-        
+    if septa_elevator_status['meta']['elevators_out'] == 0:
+        speech_output = 'All Elevators are currently operational'
+    else:
+        for elevators in septa_elevator_status['results']:
+            speech_output += 'On' + elevators['line'] + ' at station ' + elevators['station'] + \
+                ' the ' + elevators['elevator'] + \
+                ' elevator has ' + elevators['message'] + ' . '
+
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
-        
+
+
 def get_status(intent):
     session_attributes = {}
     card_title = "Septa Status"
@@ -123,50 +132,56 @@ def get_status(intent):
     reprompt_text = "I'm not sure which route you wanted the status for. " \
                     "Try asking about the Market Frankford line or a bus route, such as Route 66."
     should_end_session = False
-    
+
     if "route" in intent["slots"]:
         route_name = intent["slots"]["route"]["value"]
         route_code = get_route_code(route_name.lower())
 
         if (route_code != "unkn"):
-            
-            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
-            route_status = json.load(response)  
-            
+
+            response = urllib2.urlopen(
+                API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
+            route_status = json.load(response)
+
             bus_route = "bus_route"
             regional_rail = "rr_route"
             trolley_route = "trolley_route"
-            
+
             if bus_route in route_code:
                 if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of route " + route_status[0]["route_name"] + "." + route_status[0]["current_message"] 
+                    speech_output = "The current status of route " + \
+                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["current_message"]
                 else:
-                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."   
-                    
+                    speech_output = "There are currently no alerts for route " + \
+                        route_status[0]["route_name"] + "." + \
+                        " This route is running normally."
+
             elif regional_rail in route_code:
                 if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of the " + route_status[0]["route_name"] + "line. " + route_status[0]["current_message"] 
+                    speech_output = "The current status of the " + \
+                        route_status[0]["route_name"] + "line. " + \
+                        route_status[0]["current_message"]
                 else:
-                    speech_output = "There are currently no alerts for the " + route_status[0]["route_name"] + " line. " + " This line is running normally." 
-                    
+                    speech_output = "There are currently no alerts for the " + \
+                        route_status[0]["route_name"] + " line. " + \
+                        " This line is running normally."
+
             elif trolley_route in route_code:
                 if len(route_status[0]["current_message"]) > 0:
-                    speech_output = "The current status of route " + route_status[0]["route_name"] + "." + route_status[0]["current_message"] 
+                    speech_output = "The current status of route " + \
+                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["current_message"]
                 else:
-                    speech_output = "There are currently no alerts for route " + route_status[0]["route_name"] + "." + " This route is running normally."
-                
-                
-            
+                    speech_output = "There are currently no alerts for route " + \
+                        route_status[0]["route_name"] + "." + \
+                        " This route is running normally."
+
             reprompt_text = ""
 
-    
     return build_response(session_attributes, build_speechlet_response(
-       card_title, speech_output, reprompt_text, should_end_session))
-            
+        card_title, speech_output, reprompt_text, should_end_session))
 
-
-            
-            
 
 def get_route_code(septa_route_name):
     return {
@@ -328,5 +343,4 @@ def get_route_code(septa_route_name):
         "route 36": "trolley_route_36",
         "route 101": "trolley_route_101",
         "route 102": "trolley_route_102"
-    }.get(septa_route_name, "unkn")               
-                 
+    }.get(septa_route_name, "unkn")
