@@ -95,7 +95,9 @@ def get_welcome_response():
     session_attributes = {}
     card_title = "Philly Transit"
     speech_output = "Welcome to the Alexa Philly Transit Septa skill. " \
-                    "ask me for system status or elevator status ."
+                    "With the skill you can ask me to check for any alerts on all SEPTA rail transit and Bus service, as well as elevator outages. " \
+                    "For example, you can say are there any issues on route 47? or what elevators are out? Please ask me what you would like to know"
+
     reprompt_text = "Please ask me for trains times from a station, " \
                     "for example Fremont."
     should_end_session = False
@@ -164,7 +166,7 @@ def get_status(intent):
                         route_status[0]["current_message"]
                 else:
                     speech_output = "There are currently no alerts for the " + \
-                        route_status[0]["route_name"] + " line. " + \
+                        route_status[0]["route_name"] + "line. " + \
                         " This line is running normally."
 
             elif trolley_route in route_code:
@@ -176,8 +178,6 @@ def get_status(intent):
                     speech_output = "There are currently no alerts for route " + \
                         route_status[0]["route_name"] + "." + \
                         " This route is running normally."
-
-            reprompt_text = ""
 
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
