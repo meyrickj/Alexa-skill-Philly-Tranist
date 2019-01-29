@@ -98,8 +98,10 @@ def get_welcome_response():
                     "With the skill you can ask me to check for any alerts on all SEPTA rail transit and Bus service, as well as elevator outages. " \
                     "For example, you can say are there any issues on route 47? or what elevators are out? Please ask me what you would like to know"
 
-    reprompt_text = "Please ask me for trains times from a station, " \
-                    "for example Fremont."
+    reprompt_text = "Please ask me for the status of a bus route or train line, " \
+                    "for example, Route 47 or the Broad Street line. " \
+                    "You can also ask me for elevator status"
+            
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -109,7 +111,7 @@ def get_elevator_status():
     session_attributes = {}
     card_title = "Septa Elevator Status"
     reprompt_text = ""
-    should_end_session = False
+    should_end_session = True
 
     response = urllib2.urlopen(API_BASE_URL + "/elevator")
     septa_elevator_status = json.load(response)
@@ -117,8 +119,9 @@ def get_elevator_status():
     if septa_elevator_status['meta']['elevators_out'] == 0:
         speech_output = 'All Elevators are currently operational'
     else:
+        speech_output = "The Following elevators are out. "
         for elevators in septa_elevator_status['results']:
-            speech_output += 'On' + elevators['line'] + ' at station ' + elevators['station'] + \
+            speech_output += 'On ' + elevators['line'] + ' at station ' + elevators['station'] + \
                 ' the ' + elevators['elevator'] + \
                 ' elevator has ' + elevators['message'] + ' . '
 
@@ -131,9 +134,7 @@ def get_status(intent):
     card_title = "Septa Status"
     speech_output = "I'm not sure which route you wanted the status for. " \
                     "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
-    reprompt_text = "I'm not sure which route you wanted the status for. " \
-                    "Try asking about the Market Frankford line or a bus route, such as Route 66."
-    should_end_session = False
+    reprompt_text = ""
 
     if "route" in intent["slots"]:
         route_name = intent["slots"]["route"]["value"]
@@ -142,7 +143,7 @@ def get_status(intent):
         if (route_code != "unkn"):
 
             response = urllib2.urlopen(
-                API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
+            API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
             route_status = json.load(response)
 
             bus_route = "bus_route"
@@ -154,30 +155,42 @@ def get_status(intent):
                     speech_output = "The current status of route " + \
                         route_status[0]["route_name"] + "." + \
                         route_status[0]["current_message"]
+                    should_end_session = True
                 else:
                     speech_output = "There are currently no alerts for route " + \
                         route_status[0]["route_name"] + "." + \
                         " This route is running normally."
+                    should_end_session = True
 
             elif regional_rail in route_code:
                 if len(route_status[0]["current_message"]) > 0:
                     speech_output = "The current status of the " + \
                         route_status[0]["route_name"] + "line. " + \
                         route_status[0]["current_message"]
+                    should_end_session = True    
                 else:
                     speech_output = "There are currently no alerts for the " + \
                         route_status[0]["route_name"] + "line. " + \
                         " This line is running normally."
+                    should_end_session = True
 
             elif trolley_route in route_code:
                 if len(route_status[0]["current_message"]) > 0:
                     speech_output = "The current status of route " + \
                         route_status[0]["route_name"] + "." + \
                         route_status[0]["current_message"]
+                    should_end_session = True
                 else:
                     speech_output = "There are currently no alerts for route " + \
                         route_status[0]["route_name"] + "." + \
                         " This route is running normally."
+                    should_end_session = True
+        else:              
+            reprompt_text = "I'm not sure which route you wanted the status for. " \
+                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
+            should_end_session = False
+        
+    
 
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -310,6 +323,7 @@ def get_route_code(septa_route_name):
         "route r": "bus_route_r",
         "route lucy": "bus_route_lucy",
         "lucy": "bus_route_lucy",
+        "boulevard Direct": "bus_route_BLVDDIR",
         "broad street owl": "rr_route_bso",
         "market frankford owl": "rr_route_mfo",
         "broad street line": "rr_route_bsl",
