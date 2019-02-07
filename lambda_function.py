@@ -71,6 +71,8 @@ def on_intent(intent_request, session):
         return get_elevator_status()
     elif intent_name == "GetStatus":
         return get_status(intent)
+    elif intent_name == "GetAdvisory":
+        return get_advisory(intent)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
