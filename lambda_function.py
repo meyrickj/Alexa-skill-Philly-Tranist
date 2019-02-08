@@ -300,15 +300,16 @@ def get_detour(intent):
             API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
             route_status = json.load(response)
 
-            for route in route_status:
-                if len(route_status[0]["detour_message"]) > 0:
+            if len(route_status[0]["detour_message"]) > 0:
+                speech_output = "Here are the following detours for route " + route_status[0]["route_name"] + "."
+                for route in route_status:
                     speech_output += "There is currently a detour for route " + route_status[0]["route_name"] + ". " + " Due to " + /
                         route_status[0]["detour_reason"] + ". " + "The start location of the detour is "  + route_status[0]["detour_start_location"] + ". " + / 
                         "The detour will last between " + route_status[0]["detour_start_date_time"] + " and "  +  route_status[0]["detour_end_date_time"])
                     should_end_session = True
-                else:
-                    speech_output = "There are currently no detours for route " + route_status[0]["route_name"] + "." + " This route is running normally."        
-                    should_end_session = True
+            else:
+                speech_output = "There are currently no detours for route " + route_status[0]["route_name"] + "." + " This route is running normally."        
+                should_end_session = True
         else:              
             reprompt_text = "I'm not sure which route you wanted the advisory message for. " \
                     "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
