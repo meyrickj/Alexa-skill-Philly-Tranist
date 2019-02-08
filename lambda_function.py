@@ -73,6 +73,8 @@ def on_intent(intent_request, session):
         return get_status(intent)
     elif intent_name == "GetAdvisory":
         return get_advisory(intent)
+    elif intent_name == "GetDetour":
+        return get_detour(intent)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
@@ -198,7 +200,7 @@ def get_status(intent):
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
-# Function to get system advisory messages
+# ------------- Function to get system advisory messages ----------------------------------
 def get_advisory(intent):
     session_attributes = {}
     card_title = "Septa Advisory Message"
@@ -276,10 +278,44 @@ def get_advisory(intent):
             should_end_session = False
         
     
-
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
+# ---------------- Function to get detour status -----------------------------------
+
+def get_detour(intent):
+    session_attributes = {}
+    card_title = "Septa Detour Message"
+    speech_output = "I'm not sure which route you wanted the detour status for. " \
+                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
+    reprompt_text = ""
+
+    if "route" in intent["slots"]:
+        route_name = intent["slots"]["route"]["value"]
+        route_code = get_route_code(route_name.lower())
+
+        if (route_code != "unkn"):
+
+            response = urllib2.urlopen(
+            API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
+            route_status = json.load(response)
+
+            for route in route_status:
+                if len(route_status[0]["detour_message"]) > 0:
+                    speech_output += "There is currently a detour for route " + route_status[0]["route_name"] + ". " + " Due to " + /
+                        route_status[0]["detour_reason"] + ". " + "The start location of the detour is "  + route_status[0]["detour_start_location"] + ". " + / 
+                        "The detour will last between " + route_status[0]["detour_start_date_time"] + " and "  +  route_status[0]["detour_end_date_time"])
+                else:
+                    speech_output = "There are currently no detours for route " + route_status[0]["route_name"] + "." + " This route is running normally."        
+        else:              
+            reprompt_text = "I'm not sure which route you wanted the advisory message for. " \
+                    "Please try again. Try asking about the Market Frankford line or a bus route, such as Route 66."
+            should_end_session = False
+
+    return build_response(session_attributes, build_speechlet_response(
+        card_title, speech_output, reprompt_text, should_end_session))                
+
+			
 def get_route_code(septa_route_name):
     return {
         "route 1":	"bus_route_1",
