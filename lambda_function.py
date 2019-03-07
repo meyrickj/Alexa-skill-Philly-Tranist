@@ -302,7 +302,7 @@ def get_detour(intent):
 
             if len(route_status[0]["detour_message"]) > 0:
                 speech_output = "Here are the following detours for route " + route_status[0]["route_name"] + "."
-                for index, route in enumerate(route_status):
+                for index, route_status in enumerate(route_status):
                     speech_output = "There is currently a detour for route " + route_status[index]["route_name"] + ". " + " Due to " + route_status[index]["detour_reason"] + ". " + "The start location of the detour is "  + route_status[index]["detour_start_location"] + ". " + "The detour will last between " + route_status[index]["detour_start_date_time"] + " and "  +  route_status[index]["detour_end_date_time"]
                     should_end_session = True
             else:
