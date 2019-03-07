@@ -302,8 +302,8 @@ def get_detour(intent):
 
             if len(route_status[0]["detour_message"]) > 0:
                 speech_output = "Here are the following detours for route " + route_status[0]["route_name"] + "."
-                for route in route_status:
-                    speech_output = "There is currently a detour for route " + route[0]["route_name"] + ". " + " Due to " + route[0]["detour_reason"] + ". " + "The start location of the detour is "  + route[0]["detour_start_location"] + ". " + "The detour will last between " + route[0]["detour_start_date_time"] + " and "  +  route[0]["detour_end_date_time"]
+                for index, route in enumerate(route_status):
+                    speech_output = "There is currently a detour for route " + route_status[index]["route_name"] + ". " + " Due to " + route_status[index]["detour_reason"] + ". " + "The start location of the detour is "  + route_status[index]["detour_start_location"] + ". " + "The detour will last between " + route_status[index]["detour_start_date_time"] + " and "  +  route_status[index]["detour_end_date_time"]
                     should_end_session = True
             else:
                 speech_output = "There are currently no detours for route " + route_status[0]["route_name"] + "." + " This route is running normally."        
@@ -314,7 +314,7 @@ def get_detour(intent):
             should_end_session = False
 
     return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))                
+        card_title, speech_output, reprompt_text, should_end_session))      
 
 			
 def get_route_code(septa_route_name):
