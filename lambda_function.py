@@ -111,7 +111,7 @@ def get_welcome_response():
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
-
+# ------------- Function to get elevator status messages ----------------------------------
 def get_elevator_status():
     session_attributes = {}
     card_title = "Septa Elevator Status"
@@ -133,7 +133,7 @@ def get_elevator_status():
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
-
+# ------------- Function to get system status messages ----------------------------------
 def get_status(intent):
     session_attributes = {}
     card_title = "Septa Status"
@@ -158,12 +158,12 @@ def get_status(intent):
             if bus_route in route_code:
                 if len(route_status[0]["current_message"]) > 0:
                     speech_output = "The current status of route " + \
-                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["route_name"] + ". " + \
                         route_status[0]["current_message"]
                     should_end_session = True
                 else:
                     speech_output = "There are currently no alerts for route " + \
-                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["route_name"] + "."  + \
                         " This route is running normally."
                     should_end_session = True
 
@@ -182,12 +182,12 @@ def get_status(intent):
             elif trolley_route in route_code:
                 if len(route_status[0]["current_message"]) > 0:
                     speech_output = "The current status of route " + \
-                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["route_name"] + ". " + \
                         route_status[0]["current_message"]
                     should_end_session = True
                 else:
                     speech_output = "There are currently no alerts for route " + \
-                        route_status[0]["route_name"] + "." + \
+                        route_status[0]["route_name"] + ". " + \
                         " This route is running normally."
                     should_end_session = True
         else:              
@@ -199,7 +199,7 @@ def get_status(intent):
 
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
-
+        
 # ------------- Function to get system advisory messages ----------------------------------
 def get_advisory(intent):
     session_attributes = {}
@@ -296,14 +296,14 @@ def get_detour(intent):
 
         if (route_code != "unkn"):
 
-            response = urllib2.urlopen(
-            API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
+            response = urllib2.urlopen(API_BASE_URL + "/Alerts/get_alert_data.php?req1=" + route_code)
             route_status = json.load(response)
+        
 
             if len(route_status[0]["detour_message"]) > 0:
-                speech_output = "Here are the following detours for route " + route_status[0]["route_name"] + "."
-                for index, route_status in enumerate(route_status):
-                    speech_output = "There is currently a detour for route " + route_status[index]["route_name"] + ". " + " Due to " + route_status[index]["detour_reason"] + ". " + "The start location of the detour is "  + route_status[index]["detour_start_location"] + ". " + "The detour will last between " + route_status[index]["detour_start_date_time"] + " and "  +  route_status[index]["detour_end_date_time"]
+                speech_output = "Here are the following detours for route " + route_status[0]["route_name"] + ". "
+                for route in route_status:
+                    speech_output += " Due to " + route['detour_reason'] + ", " + "route " + route["route_name"] + " is currently detoured starting at "  + route['detour_start_location'] + ". " + "The detour will last between " + route['detour_start_date_time'] + " and "  +  route['detour_end_date_time'] + ". "
                     should_end_session = True
             else:
                 speech_output = "There are currently no detours for route " + route_status[0]["route_name"] + "." + " This route is running normally."        
@@ -314,9 +314,9 @@ def get_detour(intent):
             should_end_session = False
 
     return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))      
+        card_title, speech_output, reprompt_text, should_end_session))                
 
-			
+
 def get_route_code(septa_route_name):
     return {
         "route 1":	"bus_route_1",
@@ -451,8 +451,8 @@ def get_route_code(septa_route_name):
         "market frankford line": "rr_route_mfl",
         "norristown high speed line": "rr_route_nhsl",
         "airport": "rr_route_apt",
-        "chestnut hill east": "rr_route_chw",
-        "chestnut hill west": "rr_route_che",
+        "chestnut hill east": "rr_route_che",
+        "chestnut hill west": "rr_route_chw",
         "cynwyd": "rr_route_cyn",
         "fox chase": "rr_route_fxc",
         "lansdale/doylestown": "rr_route_landdoy",
